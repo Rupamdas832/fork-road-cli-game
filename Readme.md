@@ -1,5 +1,8 @@
 # Interactive CLI game
 
-## 2 games
+## Choose between 2 games
 - Treasure hunting
 - Fight the Dragon
+
+To start the game
+- node index.js start
