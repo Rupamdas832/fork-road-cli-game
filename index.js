@@ -3,11 +3,22 @@ const inquirer = require("inquirer");
 const forkRoad = require("./forkRoad.json");
 const dragonFight = require("./dragonFight.json");
 
-const story = dragonFight;
+const stories = [
+  {
+    name: "Treasure hunting",
+    game: forkRoad,
+  },
+  {
+    name: "Fight the dragon",
+    game: dragonFight,
+  },
+];
+let story = {};
 
 const prompt = inquirer.createPromptModule();
 
 async function playGame(option) {
+  console.log("\n");
   const currentQuestion = {
     type: "list",
     name: option,
@@ -30,6 +41,24 @@ async function playGame(option) {
   await playGame(newOption);
 }
 
+async function chooseGame() {
+  console.log("\n");
+  const question = {
+    type: "list",
+    name: "choice",
+    message: "Choose a game you want to play?",
+    choices: stories.map((item) => item.name),
+  };
+  const selectedOption = await prompt(question);
+
+  const selectedGame = stories.find(
+    (item) => item.name === selectedOption.choice
+  )?.game;
+
+  story = selectedGame;
+  playGame("start");
+}
+
 const program = new Command();
 
 program
@@ -38,8 +67,7 @@ program
     "Simple RPG game having choices to make to proceed through the game"
   )
   .action(() => {
-    console.log("called");
-    playGame("start");
+    chooseGame();
   });
 
 program.parse(process.argv);
